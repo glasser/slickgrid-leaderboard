@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "SlickGrid": {}
+    },
+    "packages": {
+      "SlickGrid": {
+        "git": "https://github.com/dnprock/meteor-slickgrid.git",
+        "tag": "v0.0.1",
+        "commit": "e722087ad72f1df7ca9dda3ddaa73d567ad741b4"
+      }
+    }
+  }
+}
