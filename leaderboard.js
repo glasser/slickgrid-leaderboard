@@ -36,30 +36,28 @@ if (Meteor.isClient) {
     if (!gridDiv)
       throw Error("No div #grid?");
 
-    var rows = [
-      {
-        field_1: "value1",
-        field_2: "value2"
-      }, {
-        field_1: "value3",
-        field_2: "value4"
-      }
-    ];
     var columns = [
-      {name: "field 1", id: "field_1", field: "field_1"},
-      {name: "field 2", id: "field_2", field: "field_2"}
+      {name: "Name", id: "name", field: "name", minWidth: 200},
+      {name: "Score", id: "score", field: "score"}
     ];
 
-    var slickGrid = new Slick.Grid(gridDiv, rows, columns,
+    var slickGrid = new Slick.Grid(gridDiv, [], columns,
                                    {enableColumnReorder: false,
                                     enableCellNavigation: true});
+    slickGrid.onClick.subscribe(function (e, info) {
+      Session.set("selected_player", slickGrid.getData()[info.row]._id);
+    });
 
     tmpl.slickGridAutorun = Deps.autorun(function () {
-
+      var cursor = Players.find({}, {sort: {score: -1, name: 1}});
+      var players = cursor.fetch();
+      slickGrid.setData(players);
+      slickGrid.invalidate();
     });
   };
 
   Template.leaderboard.destroyed = function () {
+    var tmpl = this;
     tmpl.slickGridAutorun.stop();
   };
 }
